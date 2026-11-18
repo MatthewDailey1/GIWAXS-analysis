@@ -1,0 +1,14 @@
+# Nota: C-Order, 1 refers to the Y axis, 2 to the X axis
+# Calibration done on Fri May  1 16:23:22 2026
+poni_version: 2.1
+Detector: Eiger4M
+Detector_config: {"pixel1": 7.5e-05, "pixel2": 7.5e-05, "orientation": 3, "sensor": {"material": "Si", "thickness": 0.00045}}
+Distance: 0.3165026160589637
+Poni1: 0.17523475606919608
+Poni2: 0.05604437152796108
+Rot1: -0.0032030788985747097
+Rot2: 0.001164287420642907
+Rot3: 0.0
+Wavelength: 9.762535309700809e-11
+# Calibrant: LaB6
+# Image: silx:///X:/bl17-2/user_data/2026_05_Stone/LaB6_calibration2_scan001_data_000001.h5?path=/entry/data/data&slice=0
