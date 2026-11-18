@@ -1,0 +1,37 @@
+1. Make a better mask
+
+Pick a frame with no Scherrer rings (the first LaB6 frame or a closed-beam one, as you suggested). Check it looks dark, with only isolated bright dots.
+Open it in pyFAI-drawmask (or the mask tool in pyFAI-calib2), mask the module gaps and every hot or dead pixel and short line you can see, then save it as .edf or .npy. Non-zero means masked.
+Include the detector’s own mask, or OR them together. Draw a small margin around the beam stop and any shadowed edges.
+In Cell 1, point the mask setting (BASE_EDF_MASK or EXTRA_MASK_FILE) at the new file. Set REBUILD_MASK = True for one run, then back to False.
+Clear outputs/cache/ (or set FORCE_RECOMPUTE) so everything is re-integrated with the new mask.
+
+2. Redo the geometry
+
+In pyFAI-calib2, calibrate on the LaB6 with the same energy and detector. Use many rings, refine the distance, PONI, rot1/rot2/rot3, and check that every ring is well fitted.
+Save the new .poni and select it in the notebook. A tilt or PONI error smears the peaks across χ, which adds to the apparent instrument width.
+
+3. Improve the LaB6 fits (Cell 4)
+
+Check the residual and η for each peak in the printed table. The 111, 200 and 210 fits were the poor ones.
+Print the FWHM in pixels and in 2θ for each peak, and plot width against q. It should be a smooth trend.
+Fit LaB6 in narrow χ sectors, such as 10° wedges, and compare the widths. If they’re clearly narrower, the integrated width includes χ smearing, and you need to decide whether your sample integration range should match the LaB6 one.
+Make sure you integrate the LaB6 over the same χ range as the samples. Otherwise the width doesn’t transfer.
+Exclude peaks that fit badly from the extrapolation, using LAB6_MAX_RMS_PCT.
+
+4. Check the extrapolation to q ≈ 0.99
+
+Your lowest LaB6 peak is (100) at 1.51 Å⁻¹, so the width at 0.99 is extrapolated.
+Extrapolate the total FWHM and η (smooth in q) instead of H_G and H_L separately, and compare the two results.
+Include the uncertainty of the extrapolation in the L_c CIs, not a flat 3 %.
+
+5. Check that it transfers to the samples
+
+Same energy, detector distance, geometry and χ range for the LaB6 and the sample integration.
+The beam footprint at grazing incidence can add width that a LaB6 powder doesn’t have, so keep that in mind as a possible leftover.
+Compare the instrument width against the narrowest real sample peaks. If any sample peak is narrower than the instrument width, something is off.
+
+6. Rerun and re-check
+
+Rerun Cells 4, 5, 6, 7, 7B, 7C, 7D and 8. Compare L_c, η and the number of resolution-limited samples before and after.
+Keep the old results in a separate folder so you can see what changed.
